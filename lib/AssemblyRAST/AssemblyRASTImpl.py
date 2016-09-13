@@ -12,6 +12,7 @@ import json
 import tempfile
 import re
 from datetime import datetime
+from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
 from pprint import pprint, pformat
 
 import numpy as np
@@ -203,50 +204,23 @@ This sample module contains multiple assembly methods:
         ar_report = subprocess.check_output(cmd)
 
         self.log(console, "\nDONE\n")
-
-        # Warning: this reads everything into memory!  Will not work if
-        # the contigset is very large!
-        contigset_data = {
-            'id': '{}.contigset'.format(assembler),
-            'source': 'User assembled contigs from reads in KBase',
-            'source_id':'none',
-            'md5': 'md5 of what? concat seq? concat md5s?',
-            'contigs':[]
-        }
-
+		
+		client = AssemblyUtil(self.callback_url)
+		assembly_ref = client.save_assembly_from_fasta({
+			'file':{'path':output_contigs},
+			'workspace_name':params['workspace_name'],
+			'assembly_name':params['output_contigset_name']
+		})
+        
         lengths = []
         for seq_record in SeqIO.parse(output_contigs, 'fasta'):
-            contig = {
-                'id': seq_record.id,
-                'name': seq_record.name,
-                'description': seq_record.description,
-                'length': len(seq_record.seq),
-                'sequence': str(seq_record.seq),
-                'md5': hashlib.md5(str(seq_record.seq)).hexdigest()
-            }
             lengths.append(contig['length'])
-            contigset_data['contigs'].append(contig)
-
 
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
         # add additional info to provenance here, in this case the input data object reference
         provenance[0]['input_ws_objects']=[params['workspace_name']+'/'+x for x in params['read_library_names']]
-
-        # save the contigset output
-        new_obj_info = ws.save_objects({
-                'id': wsid, # set the output workspace ID
-                'objects':[
-                    {
-                        'type': 'KBaseGenomes.ContigSet',
-                        'data': contigset_data,
-                        'name': params['output_contigset_name'],
-                        'meta': {},
-                        'provenance': provenance
-                    }
-                ]
-            })
 
         os.remove(tmp_data)
         shutil.rmtree(output_dir)
@@ -306,6 +280,7 @@ This sample module contains multiple assembly methods:
         #BEGIN_CONSTRUCTOR
         self.workspaceURL = config['workspace-url']
         self.scratch = os.path.abspath(config['scratch'])
+        self.callback_url = os.environ['SDK_CALLBACK_URL']
         if not os.path.exists(self.scratch):
             os.makedirs(self.scratch)
         #END_CONSTRUCTOR
