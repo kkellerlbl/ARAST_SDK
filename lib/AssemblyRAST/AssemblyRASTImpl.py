@@ -204,13 +204,13 @@ This sample module contains multiple assembly methods:
         ar_report = subprocess.check_output(cmd)
 
         self.log(console, "\nDONE\n")
-		
-		client = AssemblyUtil(self.callback_url)
-		assembly_ref = client.save_assembly_from_fasta({
-			'file':{'path':output_contigs},
-			'workspace_name':params['workspace_name'],
-			'assembly_name':params['output_contigset_name']
-		})
+
+        client = AssemblyUtil(self.callback_url)
+        assembly_ref = client.save_assembly_from_fasta({
+                        'file':{'path':output_contigs},
+                        'workspace_name':params['workspace_name'],
+                        'assembly_name':params['output_contigset_name']
+               	})
         
         lengths = []
         for seq_record in SeqIO.parse(output_contigs, 'fasta'):
