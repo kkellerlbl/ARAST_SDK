@@ -204,13 +204,13 @@ This sample module contains multiple assembly methods:
         ar_report = subprocess.check_output(cmd)
 
         self.log(console, "\nDONE\n")
-		
-		client = AssemblyUtil(self.callback_url)
-		assembly_ref = client.save_assembly_from_fasta({
-			'file':{'path':output_contigs},
-			'workspace_name':params['workspace_name'],
-			'assembly_name':params['output_contigset_name']
-		})
+
+        client = AssemblyUtil(self.callback_url)
+        assembly_ref = client.save_assembly_from_fasta({
+                        'file':{'path':output_contigs},
+                        'workspace_name':params['workspace_name'],
+                        'assembly_name':params['output_contigset_name']
+               	})
         
         lengths = []
         for seq_record in SeqIO.parse(output_contigs, 'fasta'):
@@ -370,8 +370,8 @@ This sample module contains multiple assembly methods:
         # ctx is the context object
         # return variables are: output
         #BEGIN run_arast
-        output = self.arast_run(ctx, params, params.get('assembler', ""))
-        # output = self.arast_run(ctx, params, params.get('assembler', ""),
-        #                         server='https://kbase.us/services/assembly')
+        #output = self.arast_run(ctx, params, params.get('assembler', ""))
+        output = self.arast_run(ctx, params, params.get('assembler', ""),
+                                 server='https://kbase.us/services/assembly')
         #END run_arast
         return [output]
