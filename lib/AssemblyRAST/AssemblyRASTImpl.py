@@ -214,7 +214,7 @@ This sample module contains multiple assembly methods:
         
         lengths = []
         for seq_record in SeqIO.parse(output_contigs, 'fasta'):
-            lengths.append(contig['length'])
+            lengths.append(len(seq_record.seq))
 
         provenance = [{}]
         if 'provenance' in ctx:
