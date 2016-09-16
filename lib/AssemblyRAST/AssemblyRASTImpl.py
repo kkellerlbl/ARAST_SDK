@@ -231,7 +231,7 @@ This sample module contains multiple assembly methods:
 
         report += '========== Filtered Contigs ==========\n'
         report += 'ContigSet saved to: '+params['workspace_name']+'/'+params['output_contigset_name']+'\n'
-        report += 'Assembled into '+str(len(contigset_data['contigs'])) + ' contigs.\n'
+        report += 'Assembled into '+str(len(lengths)) + ' contigs.\n'
         report += 'Average Length: '+str(sum(lengths)/float(len(lengths))) + ' bp.\n'
 
         # compute a simple contig length distribution
