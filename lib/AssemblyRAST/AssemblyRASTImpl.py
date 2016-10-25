@@ -85,8 +85,8 @@ This sample module contains multiple assembly methods:
         for libobj in libs:
             data = libobj['data']
             info = libobj['info']
-            print(json.dumps(data))
-            print(json.dumps(info))
+            #print(json.dumps(data))
+            #print(json.dumps(info))
             type_name = info[2].split('.')[1].split('-')[0]
             lib = dict()
             if type_name == 'PairedEndLibrary':
@@ -187,7 +187,10 @@ This sample module contains multiple assembly methods:
         output_dir = os.path.join(self.scratch, 'output.'+str(timestamp))
         output_contigs = os.path.join(output_dir, 'contigs.fa')
         if not os.path.exists(output_dir):
+            print "Creating output_dir %s\n===================\n"%(output_dir)
             os.makedirs(output_dir)
+        if not os.path.exists(output_dir):
+            raise OSError('Failed to create output_dir')
 
         cmd = ['ar-get', '-j', job_id, '-w', '-l']
         logger.debug('CMD: {}'.format(' '.join(cmd)))
@@ -223,7 +226,7 @@ This sample module contains multiple assembly methods:
         provenance[0]['input_ws_objects']=[params['workspace_name']+'/'+x for x in params['read_library_names']]
 
         os.remove(tmp_data)
-        shutil.rmtree(output_dir)
+        #shutil.rmtree(output_dir)
 
         # create a Report
         report = ''
@@ -372,6 +375,6 @@ This sample module contains multiple assembly methods:
         #BEGIN run_arast
         #output = self.arast_run(ctx, params, params.get('assembler', ""))
         output = self.arast_run(ctx, params, params.get('assembler', ""),
-                                 server='https://kbase.us/services/assembly')
+                                 server='http://localhost:8000')
         #END run_arast
         return [output]
