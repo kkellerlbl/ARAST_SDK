@@ -56,8 +56,15 @@ RUN \
 # Copy local wrapper files, and build
 
 COPY ./ /kb/module
+# Create paths and fix perms
+# Remove logging messages for curl and make it silent
+# Don't require min space
 RUN mkdir -p /kb/module/work && chmod -R a+w /kb/module /kb/assembly/lib/assembly && \
-    rm /tmp/mongo.log && rm -rf /tmp/tools 
+    rm /tmp/mongo.log && rm -rf /tmp/tools  && \
+    cat /kb/module/shock.diff |(cd /;patch -p0) && \ 
+    sed -i 's/silent=False/silent=True/' /kb/assembly/lib/assembly/shock.py && \
+    sed -i 's/min_free_space = 80/min_free_space = 0/' /kb/assembly/lib/assembly/ar_compute.conf
+    
 
 WORKDIR /kb/module
 
