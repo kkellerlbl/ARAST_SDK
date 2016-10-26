@@ -115,7 +115,7 @@ This sample module contains multiple assembly methods:
         return assembly_input
 
     # template
-    def arast_run(self, ctx, params, assembler, server='140.221.67.209'): # testing on torino
+    def arast_run(self, ctx, params, assembler, server='http://localhost:8000/'):
         output = None
 
         console = []
@@ -138,7 +138,7 @@ This sample module contains multiple assembly methods:
         token = ctx['token']
 
         os.environ["KB_AUTH_TOKEN"] = token
-        os.environ["ARAST_URL"] =  server # testing on torino: '140.221.67.209'
+        os.environ["ARAST_URL"] =  server
 
         ws = workspaceService(self.workspaceURL, token=token)
         ws_libs = []
@@ -187,10 +187,7 @@ This sample module contains multiple assembly methods:
         output_dir = os.path.join(self.scratch, 'output.'+str(timestamp))
         output_contigs = os.path.join(output_dir, 'contigs.fa')
         if not os.path.exists(output_dir):
-            print "Creating output_dir %s\n===================\n"%(output_dir)
             os.makedirs(output_dir)
-        if not os.path.exists(output_dir):
-            raise OSError('Failed to create output_dir')
 
         cmd = ['ar-get', '-j', job_id, '-w', '-l']
         logger.debug('CMD: {}'.format(' '.join(cmd)))
@@ -373,8 +370,6 @@ This sample module contains multiple assembly methods:
         # ctx is the context object
         # return variables are: output
         #BEGIN run_arast
-        #output = self.arast_run(ctx, params, params.get('assembler', ""))
-        output = self.arast_run(ctx, params, params.get('assembler', ""),
-                                 server='http://localhost:8000')
+        output = self.arast_run(ctx, params, params.get('assembler', ""))
         #END run_arast
         return [output]
