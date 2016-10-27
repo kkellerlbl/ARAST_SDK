@@ -27,12 +27,18 @@ start_backend () {
 
     # Start up compute service
     mkdir /kb/module/work/worker/
-    sleep 2
-    ./create.py
+    sleep 1
+    ./create.py || exit 1
     HOME=/tmp python $ADIR/ar_computed.py -s localhost \
 		-d /kb/module/work/worker/ \
 		-c $ADIR/ar_compute.conf \
 		-b /kb/runtime/assembly/ &
+    AC=$!
+    sleep 5
+    if [ ! -e /proc/$AC ] ; then 
+      echo "Compute backend failed to start"
+      exit 1
+    fi
 }
 
 if [ $# -eq 0 ] ; then
