@@ -29,6 +29,7 @@ start_backend () {
     mkdir /kb/module/work/worker/
     sleep 1
     ./create.py || exit 1
+    sleep 5
     HOME=/tmp python $ADIR/ar_computed.py -s localhost \
 		-d /kb/module/work/worker/ \
 		-c $ADIR/ar_compute.conf \
