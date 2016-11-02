@@ -26,6 +26,8 @@ start_backend () {
 		--logfile /tmp/arastd.log > /tmp/arastd-start.log 2>&1 &
 
     # Start up compute service
+    PERL5LIB=$PERL5LIB:/kb/runtime/assembly/a5/bin/SSPACE/dotlib/
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/kb/runtime/assembly/masurca/lib/
     mkdir /kb/module/work/worker/
     sleep 1
     ./create.py || exit 1

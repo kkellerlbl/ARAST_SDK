@@ -321,7 +321,6 @@ class AssemblyRASTTest(unittest.TestCase):
         print('RESULT:')
         pprint(result)
 
-
     def test_run_velvet(self):
 
         # figure out where the test data lives
@@ -340,3 +339,36 @@ class AssemblyRASTTest(unittest.TestCase):
         result = self.getImpl().run_velvet(self.getContext(),params)
         print('RESULT:')
         pprint(result)
+
+    def test_run_a6(self):
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo()
+        pprint(pe_lib_info)
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'read_library_names': [pe_lib_info[1]],
+            'output_contigset_name': 'output.contigset',
+            'min_contig_length': 350,
+        }
+
+        result = self.getImpl().run_a6(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+    def test_run_masurca(self):
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo()
+        pprint(pe_lib_info)
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'read_library_names': [pe_lib_info[1]],
+            'output_contigset_name': 'output.contigset',
+            'min_contig_length': 350,
+        }
+
+        result = self.getImpl().run_masurca(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+

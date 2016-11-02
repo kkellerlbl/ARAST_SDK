@@ -59,7 +59,9 @@ COPY ./ /kb/module
 # Create paths and fix perms
 # Remove logging messages for curl and make it silent
 # Don't require min space
+# Fix for masurca
 RUN mkdir -p /kb/module/work && chmod -R a+w /kb/module /kb/assembly/lib/assembly && \
+    sed -i 's/THREASHOLD/THRESHOLD/' /kb/assembly/lib/assembly/plugins/masurca.py && \
     rm /tmp/mongo.log && rm -rf /tmp/tools  && \
     cat /kb/module/shock.diff |(cd /;patch -p0) && \ 
     sed -i 's/silent=False/silent=True/' /kb/assembly/lib/assembly/shock.py && \
