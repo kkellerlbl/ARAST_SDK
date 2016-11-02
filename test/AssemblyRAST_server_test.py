@@ -92,12 +92,12 @@ class AssemblyRASTTest(unittest.TestCase):
         token = self.ctx['token']
         forward_shock_file = self.curl_upload_file_to_shock(
             shock_service_url = self.shockURL,
-            filePath = 'data/small.forward.fq',
+            filePath = '/kb/module/data/small.forward.fq',
             token = token
             )
         reverse_shock_file = self.curl_upload_file_to_shock(
             shock_service_url = self.shockURL,
-            filePath = 'data/small.reverse.fq',
+            filePath = '/kb/module/data/small.reverse.fq',
             token = token
             )
         #pprint(forward_shock_file)
@@ -233,13 +233,13 @@ class AssemblyRASTTest(unittest.TestCase):
         cmd += ['-s']
         cmd += ['-H', '"Authorization: OAuth {}"'.format(token)]
 
-        sys.stderr.write("Uploading: {}\n".format(' '.join(cmd)))
-        logger.debug("curl_post_file: {}".format(' '.join(cmd)))
+        #sys.stderr.write("Uploading: {}\n".format(' '.join(cmd)))
+        #logger.debug("curl_post_file: {}".format(' '.join(cmd)))
         r = subprocess.check_output(' '.join(cmd), shell=True)
         sys.stderr.write("\n")
 
         res = json.loads(r)
-        logger.debug("res: {}\n".format(res))
+        #logger.debug("res: {}\n".format(res))
         # pprint(res)
 
         if res['error']:
@@ -272,7 +272,7 @@ class AssemblyRASTTest(unittest.TestCase):
     def test_run_arast(self):
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo()
-        pprint(pe_lib_info)
+        #pprint(pe_lib_info)
 
         # Object Info Contents
         # 0 - obj_id objid
@@ -308,18 +308,6 @@ class AssemblyRASTTest(unittest.TestCase):
         pe_lib_info = self.getPairedEndLibInfo()
         pprint(pe_lib_info)
 
-        # Object Info Contents
-        # 0 - obj_id objid
-        # 1 - obj_name name
-        # 2 - type_string type
-        # 3 - timestamp save_date
-        # 4 - int version
-        # 5 - username saved_by
-        # 6 - ws_id wsid
-        # 7 - ws_name workspace
-        # 8 - string chsum
-        # 9 - int size
-        # 10 - usermeta meta
 
         params = {
             'workspace_name': pe_lib_info[7],
@@ -333,25 +321,12 @@ class AssemblyRASTTest(unittest.TestCase):
         print('RESULT:')
         pprint(result)
 
-
     def test_run_velvet(self):
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo()
         pprint(pe_lib_info)
 
-        # Object Info Contents
-        # 0 - obj_id objid
-        # 1 - obj_name name
-        # 2 - type_string type
-        # 3 - timestamp save_date
-        # 4 - int version
-        # 5 - username saved_by
-        # 6 - ws_id wsid
-        # 7 - ws_name workspace
-        # 8 - string chsum
-        # 9 - int size
-        # 10 - usermeta meta
 
         params = {
             'workspace_name': pe_lib_info[7],
@@ -364,3 +339,36 @@ class AssemblyRASTTest(unittest.TestCase):
         result = self.getImpl().run_velvet(self.getContext(),params)
         print('RESULT:')
         pprint(result)
+
+    def test_run_a6(self):
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo()
+        pprint(pe_lib_info)
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'read_library_names': [pe_lib_info[1]],
+            'output_contigset_name': 'output.contigset',
+            'min_contig_length': 350,
+        }
+
+        result = self.getImpl().run_a6(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+    def test_run_masurca(self):
+        # figure out where the test data lives
+        pe_lib_info = self.getPairedEndLibInfo()
+        pprint(pe_lib_info)
+
+        params = {
+            'workspace_name': pe_lib_info[7],
+            'read_library_names': [pe_lib_info[1]],
+            'output_contigset_name': 'output.contigset',
+            'min_contig_length': 350,
+        }
+
+        result = self.getImpl().run_masurca(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+

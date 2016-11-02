@@ -1,0 +1,20 @@
+--- /kb/assembly/lib/assembly/shock.py.orig	2016-10-26 15:58:14.603966739 +0000
++++ /kb/assembly/lib/assembly/shock.py	2016-10-26 15:58:23.595963775 +0000
+@@ -69,8 +69,6 @@
+     if token:
+         cmd += ['-H', '"Authorization: OAuth {}"'.format(token)]
+ 
+-    sys.stderr.write("Downloading: {}\n".format(' '.join(cmd)))
+-    logger.debug("curl_download_url: {}".format(' '.join(cmd)))
+     p = subprocess.Popen(' '.join(cmd), cwd=outdir, shell=True)
+     p.wait()
+     sys.stderr.write("\n")
+@@ -257,8 +255,6 @@
+         if auth:
+             cmd += ['-H', '"Authorization: OAuth {}"'.format(self.token)]
+ 
+-        sys.stderr.write("Uploading: {}\n".format(' '.join(cmd)))
+-        logger.debug("curl_post_file: {}".format(' '.join(cmd)))
+         r = subprocess.check_output(' '.join(cmd), shell=True)
+         sys.stderr.write("\n")
+ 

@@ -85,8 +85,8 @@ This sample module contains multiple assembly methods:
         for libobj in libs:
             data = libobj['data']
             info = libobj['info']
-            print(json.dumps(data))
-            print(json.dumps(info))
+            #print(json.dumps(data))
+            #print(json.dumps(info))
             type_name = info[2].split('.')[1].split('-')[0]
             lib = dict()
             if type_name == 'PairedEndLibrary':
@@ -115,7 +115,7 @@ This sample module contains multiple assembly methods:
         return assembly_input
 
     # template
-    def arast_run(self, ctx, params, assembler, server='140.221.67.209'): # testing on torino
+    def arast_run(self, ctx, params, assembler, server='http://localhost:8000/'):
         output = None
 
         console = []
@@ -138,7 +138,7 @@ This sample module contains multiple assembly methods:
         token = ctx['token']
 
         os.environ["KB_AUTH_TOKEN"] = token
-        os.environ["ARAST_URL"] =  server # testing on torino: '140.221.67.209'
+        os.environ["ARAST_URL"] =  server
 
         ws = workspaceService(self.workspaceURL, token=token)
         ws_libs = []
@@ -223,7 +223,7 @@ This sample module contains multiple assembly methods:
         provenance[0]['input_ws_objects']=[params['workspace_name']+'/'+x for x in params['read_library_names']]
 
         os.remove(tmp_data)
-        shutil.rmtree(output_dir)
+        #shutil.rmtree(output_dir)
 
         # create a Report
         report = ''
@@ -370,8 +370,6 @@ This sample module contains multiple assembly methods:
         # ctx is the context object
         # return variables are: output
         #BEGIN run_arast
-        #output = self.arast_run(ctx, params, params.get('assembler', ""))
-        output = self.arast_run(ctx, params, params.get('assembler', ""),
-                                 server='https://kbase.us/services/assembly')
+        output = self.arast_run(ctx, params, params.get('assembler', ""))
         #END run_arast
         return [output]
