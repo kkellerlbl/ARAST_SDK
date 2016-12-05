@@ -69,7 +69,7 @@
                 {
                     "input_parameter": "read_library_names",
                     "target_property": "read_library_refs",
-                    "target_type_transform": "resolved-ref"
+                    "target_type_transform": "list<resolved-ref>"
                 },
                 {
                     "input_parameter": "output_contigset_name",
