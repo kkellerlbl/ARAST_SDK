@@ -8,53 +8,53 @@
     "categories": ["active","assembly"],
     "widgets": {
         "input": null,
-	"output": "kbaseReportView"
+        "output": "kbaseReportView"
     },
     "parameters": [
         {
-	    "id": "read_library_names",
-	    "optional": false,
-	    "advanced": false,
-	    "allow_multiple": true,
-	    "default_values": [ "" ],
-	    "field_type": "text",
-	    "text_options": {
-		"valid_ws_types": ["KBaseAssembly.PairedEndLibrary","KBaseFile.PairedEndLibrary"]
-	    }
+            "id": "read_library_names",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": true,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": ["KBaseAssembly.PairedEndLibrary","KBaseFile.PairedEndLibrary"]
+            }
         },
-	{
-	    "id" : "output_contigset_name",
-	    "optional" : false,
-	    "advanced" : false,
-	    "allow_multiple" : false,
-	    "default_values" : [ "a5.contigs" ],
-	    "field_type" : "text",
-	    "text_options" : {
-		"valid_ws_types" : [ "KBaseGenomeAnnotations.Assembly" ],
-		"is_output_name":true
-	    }
-	},
-	{
-	    "id" : "min_contig_len",
-	    "optional" : true,
-	    "advanced" : true,
-	    "allow_multiple" : false,
-	    "default_values" : [ "" ],
-	    "field_type" : "text",
-	    "text_options" : {
-		"validate_as": "int",
-      		"min_int" : 1
-	    }
-	},
-	{
-	    "id" : "extra_params",
-	    "optional" : true,
-	    "advanced" : true,
-	    "allow_multiple" : true,
-	    "default_values" : [ "" ],
-	    "field_type" : "text",
-	    "text_options" : { }
-	}
+        {
+            "id" : "output_contigset_name",
+            "optional" : false,
+            "advanced" : false,
+            "allow_multiple" : false,
+            "default_values" : [ "a5.contigs" ],
+            "field_type" : "text",
+            "text_options" : {
+                "valid_ws_types" : [ "KBaseGenomeAnnotations.Assembly" ],
+                "is_output_name":true
+            }
+        },
+        {
+            "id" : "min_contig_len",
+            "optional" : true,
+            "advanced" : true,
+            "allow_multiple" : false,
+            "default_values" : [ "" ],
+            "field_type" : "text",
+            "text_options" : {
+            "validate_as": "int",
+                "min_int" : 1
+            }
+        },
+        {
+            "id" : "extra_params",
+            "optional" : true,
+            "advanced" : true,
+            "allow_multiple" : true,
+            "default_values" : [ "" ],
+            "field_type" : "text",
+            "text_options" : { }
+        }
     ],
     "behavior": {
         "service-mapping": {
@@ -64,24 +64,25 @@
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",
-		    "target_property": "workspace_name"
+                    "target_property": "workspace_name"
                 },
                 {
-		    "input_parameter": "read_library_names",
-          	    "target_property": "read_library_names"
+                    "input_parameter": "read_library_names",
+                    "target_property": "read_library_refs",
+                    "target_type_transform": "resolved-ref"
                 },
-		{
-		    "input_parameter": "output_contigset_name",
-          	    "target_property": "output_contigset_name"
-		},
-		{
-		    "input_parameter": "min_contig_len",
-          	    "target_property": "min_contig_len"
-		},
-		{
-		    "input_parameter": "extra_params",
-          	    "target_property": "extra_params"
-		}
+                {
+                    "input_parameter": "output_contigset_name",
+                    "target_property": "output_contigset_name"
+                },
+                {
+                    "input_parameter": "min_contig_len",
+                    "target_property": "min_contig_len"
+                },
+                {
+                    "input_parameter": "extra_params",
+                    "target_property": "extra_params"
+                }
             ],
             "output_mapping": [
                 {
@@ -96,10 +97,10 @@
                     "service_method_output_path": [0, "report_ref"],
                     "target_property": "report_ref"
                 },
-		{
-		    "constant_value": "16",
-		    "target_property": "report_window_line_height"
-		}
+                {
+                    "constant_value": "16",
+                    "target_property": "report_window_line_height"
+                }
             ]
         }
     },
