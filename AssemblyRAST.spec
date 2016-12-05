@@ -21,6 +21,7 @@ module AssemblyRAST {
     typedef structure {
         string workspace_name;
         list<string> read_library_names;
+        list<string> read_library_refs;
         string output_contigset_name;
 
         int min_contig_len;
