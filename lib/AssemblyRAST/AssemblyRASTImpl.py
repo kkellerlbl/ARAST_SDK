@@ -47,7 +47,7 @@ This modules run assemblers supported in the AssemblyRAST service.
     ######################################### noqa
     VERSION = "0.0.2"
     GIT_URL = "git@github.com:msneddon/ARAST_SDK"
-    GIT_COMMIT_HASH = "0d38471eb598e4ed3add14324c2ae42553264ae1"
+    GIT_COMMIT_HASH = "f40aa21bb9ed1543a57ca14e636887b62f27dda7"
 
     #BEGIN_CLASS_HEADER
     workspaceURL = None
