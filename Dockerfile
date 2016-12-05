@@ -53,6 +53,18 @@ RUN \
     make -f Makefile.standalone
 
 
+# update installed WS client (will now include get_objects2)
+RUN mkdir -p /kb/module && \
+    cd /kb/module && \
+    git clone https://github.com/kbase/workspace_deluxe && \
+    cd workspace_deluxe && \
+    git checkout f14c9eb && \
+    rm -rf /kb/deployment/lib/biokbase/workspace && \
+    cp -vr lib/biokbase/workspace /kb/deployment/lib/biokbase/workspace && \
+    cd /kb/module && \
+    rm -rf workspace_deluxe
+
+
 # Copy local wrapper files, and build
 
 COPY ./ /kb/module
