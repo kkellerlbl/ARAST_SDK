@@ -14,6 +14,7 @@ import re
 from datetime import datetime
 from AssemblyUtil.AssemblyUtilClient import AssemblyUtil
 from pprint import pprint, pformat
+from collections import Iterable
 
 import numpy as np
 
@@ -92,20 +93,32 @@ This sample module contains multiple assembly methods:
             if type_name == 'PairedEndLibrary':
                 if 'lib1' in data:
                     lib['handle_1'] = data['lib1']['file']
+                    if 'file_name' not in lib['handle_1']:
+                        lib['handle_1']['file_name']='lib1.fq'
                 elif 'handle_1' in data:
                     lib['handle_1'] = data['handle_1']
+                    if 'file_name' not in lib['handle_1']:
+                        lib['handle_1']['file_name']='lib1.fq'
                 if 'lib2' in data:
                     lib['handle_2'] = data['lib2']['file']
+                    if 'file_name' not in lib['handle_2']:
+                        lib['handle_2']['file_name']='lib2.fq'
                 elif 'handle_2' in data:
                     lib['handle_2'] = data['handle_2']
+                    if 'file_name' not in lib['handle_2']:
+                        lib['handle_2']['file_name']='lib2.fq'
                 if 'interleaved' in data:
                     lib['interleaved'] = data['interleaved']
+                    if isinstance(lib['interleaved'], Iterable) and 'file_name' not in lib['interleaved']:
+                        lib['interleaved']['file_name']='reads.fq'
                 pe_libs.append(lib)
             elif type_name == 'SingleEndLibrary':
                 if 'lib' in data:
                     lib['handle'] = data['lib']['file']
                 elif 'handle' in data:
                     lib['handle'] = data['handle']
+                if 'file_name' not in lib['handle']:
+                    lib['handle']['file_name']='reads.fq'
                 se_libs.append(lib)
 
         assembly_input = { 'paired_end_libs': pe_libs,
