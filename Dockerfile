@@ -47,6 +47,7 @@ RUN \
 RUN pip install PrettyTable yapsy
 
 RUN \
+    rm -rf assembly && \
     git clone https://github.com/kbase/assembly.git && \
     cd assembly && \
     git checkout next && \
