@@ -3,7 +3,7 @@
 #
 name: Assemble Contigs from Reads
 tooltip: |
-    Assemble DNA reads into a set of contigs.
+    Assemble DNA reads into a set of contigs (an Assembly object).
 screenshots: []
 
 icon: arast-blue.png
@@ -28,39 +28,39 @@ suggestions:
 #
 parameters :
     read_library_names :
-        ui-name : Read Library
+        ui-name : Read library/libraries
         short-hint : List of read libraries
     output_contigset_name:
-        ui-name : Output ContigSet name
-        short-hint : Enter a name for the assembled contigs data object
+        ui-name : Output Assembly object name
+        short-hint : Enter a name for the Assembly (assembled contigs) data object
     recipe :
         ui-name : |
             Assembly Recipe
         short-hint : |
-            This method can assemble contigs using several "recipes" or curated workflows that can provide intelligent pipelines, automatic parameter selection, or multi-assembler comparisons (see manual page for more information)
+            This app can assemble contigs using several "recipes" or curated workflows that can provide intelligent pipelines, automatic parameter selection, or multi-assembler comparisons (see manual page for more information)
         long-hint  : |
-            This method can assemble contigs using several "recipes" or curated workflows that can provide intelligent pipelines, automatic parameter selection, or multi-assembler comparisons (see manual page for more information)
+            This app can assemble contigs using several "recipes" or curated workflows that can provide intelligent pipelines, automatic parameter selection, or multi-assembler comparisons (see manual page for more information)
     assembler :
         ui-name : |
             Assembler Mode
         short-hint : |
-            An assembler listed below can be chosen as the preferred tool for assembly.
+            One of these assemblers can be chosen as the preferred tool for assembly.
         long-hint  : |
-            An assembler listed below can be chosen as the preferred tool for assembly.
+            One of these assemblers can be chosen as the preferred tool for assembly.
     pipeline :
         ui-name : |
             Assembly Pipeline
         short-hint : |
-            Allows the user to rapidly build a customized pipeline combination using the set of available preprocessing, assembly, and postprocessing tools (see the technical description in the manual page for more information); a pipeline is specified via a space-separated string, e.g: bhammer velvet
+            Allows the user to rapidly build a customized pipeline combination using the set of available preprocessing, assembly, and postprocessing tools
         long-hint  : |
-            Allows the user to rapidly build a customized pipeline combination using the set of available preprocessing, assembly, and postprocessing tools (see the technical description in the manual page for more information); a pipeline is specified via a space-separated string, e.g: bhammer velvet
+            Allows the user to rapidly build a customized pipeline combination using the set of available preprocessing, assembly, and postprocessing tools (see the technical description in the manual page for more information); a pipeline is specified via a space-separated string, e.g., bhammer velvet
     min_contig_len:
         ui-name : Minimal contig length
         short-hint : Minimum length of contigs to output, default 300
 
 description : |
 
-    <p>This method can be used to perform an automatic genome assembly using the latest computational tools. Single or multiple assemblers can be invoked to compare results. Resulting assemblies are automatically processed via a collection of analysis tools developed by both KBase and the research community. The assembly method attempts to select the best (the smallest number of contigs, the longest average contig length) assembly to suggest to the user.</p>
+    <p>This app can be used to perform an automatic genome assembly using the latest computational tools. Single or multiple assemblers can be invoked to compare results. Resulting assemblies are automatically processed via a collection of analysis tools developed by both KBase and the research community. The app attempts to select the best assembly (the smallest number of contigs, the longest average contig length) to suggest to the user.</p>
     <p>Several assembly workflows or "recipes" are available. These workflows have been tuned and tested to fit certain dataset types or desired analysis criteria such as throughput or rigor. The compute engine's flexible nature also enables the rapid design and emulation of other popular protocols.</p>
     <p>Additionally, custom workflows can be designed and executed in "pipeline" mode without having to compose complicated scripts. Workflows can be composed with combinations of quality filtering or trimming, error correction, adapter removal, assembly, scaffolding, or post-processing.</p>
 
@@ -165,7 +165,7 @@ description : |
     </p>
 
     <p><strong>Team members who developed & deployed algorithm in KBase:</strong>
-    Chris Bun, Fangfang Xia. For questions, <a href="mailto:help@kbase.us">e-mail help@kbase.us</a></p>
+    Chris Bun, Fangfang Xia. For questions, <a href="http://kbase.us/contact-us/">contact us</a>.</p>
 
 publications :
     -
