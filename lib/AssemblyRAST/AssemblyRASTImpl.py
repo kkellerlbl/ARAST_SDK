@@ -231,7 +231,11 @@ This modules run assemblers supported in the AssemblyRAST service.
         if 'provenance' in ctx:
             provenance = ctx['provenance']
         # add additional info to provenance here, in this case the input data object reference
-        provenance[0]['input_ws_objects']=[params['workspace_name']+'/'+x for x in params['read_library_names']]
+        if 'read_library_names' in params:
+            provenance[0]['input_ws_objects']=[params['workspace_name']+'/'+x for x in params['read_library_names']]
+        elif 'read_library_refs' in params:
+            provenance[0]['input_ws_objects']=[x for x in params['read_library_refs']]
+
 
         os.remove(tmp_data)
         #shutil.rmtree(output_dir)
