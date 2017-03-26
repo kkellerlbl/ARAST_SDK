@@ -10,8 +10,14 @@ MAINTAINER Fangfang Xia
 # -----------------------------------------
 
 
-RUN apt-get install libffi-dev libssl-dev
-RUN pip install --upgrade requests[security]
+RUN sudo apt-get install python-dev libffi-dev libssl-dev && \
+    pip install cffi --upgrade && \
+    pip install pyopenssl --upgrade && \
+    pip install --upgrade ndg-httpsclient && \
+    pip install pyasn1 --upgrade && \
+    pip install requests --upgrade &&  \
+    pip install 'requests[security]' --upgrade
+
 
 # -----------------------------------------
 RUN apt-get update && \
@@ -32,6 +38,7 @@ RUN \
     git clone https://github.com/kbase/assembly.git && \
     cd assembly/tools && \
     cp /tmp/tools/add-comp.pl . && \
+    sed -i 's/run("wget \$url/run("wget --no-check-certificate \$url/' ./add-comp.pl && \
     ./add-comp.pl -d /kb/runtime/assembly prodigal && \
     ./add-comp.pl -d /kb/runtime/assembly regular && \
     rm -rf /mnt/tmp
@@ -65,6 +72,7 @@ RUN mkdir -p /kb/module/work && chmod -R a+w /kb/module /kb/assembly/lib/assembl
     rm /tmp/mongo.log && rm -rf /tmp/tools  && \
     cat /kb/module/shock.diff |(cd /;patch -p0) && \ 
     sed -i 's/silent=False/silent=True/' /kb/assembly/lib/assembly/shock.py && \
+    cd /kb/assembly && cat /kb/module/router.patch |patch -p1 && \
     sed -i 's/min_free_space = 80/min_free_space = 0/' /kb/assembly/lib/assembly/ar_compute.conf
     
 

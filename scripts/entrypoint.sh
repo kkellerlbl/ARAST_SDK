@@ -3,6 +3,12 @@
 
 python ./scripts/prepare_deploy_cfg.py ./deploy.cfg ./work/config.properties
 
+if [ -z $KB_AUTH_TOKEN ] ; then 
+  export KB_AUTH_TOKEN=$(cat /kb/module/work/token)
+fi
+export KB_AUTH_USER_ID=$(PYTHONPATH=/kb/module/lib ./scripts/get_user.py)
+
+
 # Helper function to start ARAST backend
 start_backend () {
     echo "Starting local instance of ARAST backend services (mongo, rabitmq, ARAST)"

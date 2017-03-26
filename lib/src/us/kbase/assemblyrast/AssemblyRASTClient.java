@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import us.kbase.auth.AuthToken;
 import us.kbase.common.service.JsonClientCaller;
 import us.kbase.common.service.JsonClientException;
@@ -16,11 +17,12 @@ import us.kbase.common.service.UnauthorizedException;
  * <p>Original spec-file module name: AssemblyRAST</p>
  * <pre>
  * A KBase module: AssemblyRAST
- * This sample module contains one small method - filter_contigs.
+ * This modules run assemblers supported in the AssemblyRAST service.
  * </pre>
  */
 public class AssemblyRASTClient {
     private JsonClientCaller caller;
+    private String serviceVersion = null;
 
 
     /** Constructs a client with a custom URL and no user credentials.
@@ -50,6 +52,20 @@ public class AssemblyRASTClient {
      */
     public AssemblyRASTClient(URL url, String user, String password) throws UnauthorizedException, IOException {
         caller = new JsonClientCaller(url, user, password);
+    }
+
+    /** Constructs a client with a custom URL
+     * and a custom authorization service URL.
+     * @param url the URL of the service.
+     * @param user the user name.
+     * @param password the password for the user name.
+     * @param auth the URL of the authorization server.
+     * @throws UnauthorizedException if the credentials are not valid.
+     * @throws IOException if an IOException occurs when checking the user's
+     * credentials.
+     */
+    public AssemblyRASTClient(URL url, String user, String password, URL auth) throws UnauthorizedException, IOException {
+        caller = new JsonClientCaller(url, user, password, auth);
     }
 
     /** Get the token this client uses to communicate with the server.
@@ -139,21 +155,205 @@ public class AssemblyRASTClient {
         caller.setFileForNextRpcResponse(f);
     }
 
+    public String getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    public void setServiceVersion(String newValue) {
+        this.serviceVersion = newValue;
+    }
+
     /**
-     * <p>Original spec-file function name: filter_contigs</p>
+     * <p>Original spec-file function name: run_kiki</p>
      * <pre>
-     * Filter contigs in a ContigSet by DNA length
      * </pre>
-     * @param   params   instance of type {@link us.kbase.assemblyrast.FilterContigsParams FilterContigsParams}
-     * @return   instance of type {@link us.kbase.assemblyrast.FilterContigsResults FilterContigsResults}
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public FilterContigsResults filterContigs(FilterContigsParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public AssemblyOutput runKiki(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(params);
-        TypeReference<List<FilterContigsResults>> retType = new TypeReference<List<FilterContigsResults>>() {};
-        List<FilterContigsResults> res = caller.jsonrpcCall("AssemblyRAST.filter_contigs", args, retType, true, true, jsonRpcContext);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_kiki", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_velvet</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runVelvet(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_velvet", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_miniasm</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runMiniasm(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_miniasm", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_spades</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runSpades(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_spades", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_idba</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runIdba(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_idba", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_megahit</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runMegahit(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_megahit", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_ray</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runRay(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_ray", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_masurca</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runMasurca(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_masurca", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_a5</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runA5(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_a5", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_a6</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.AssemblyParams AssemblyParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runA6(AssemblyParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_a6", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: run_arast</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.assemblyrast.ArastParams ArastParams}
+     * @return   parameter "output" of type {@link us.kbase.assemblyrast.AssemblyOutput AssemblyOutput}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public AssemblyOutput runArast(ArastParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<AssemblyOutput>> retType = new TypeReference<List<AssemblyOutput>>() {};
+        List<AssemblyOutput> res = caller.jsonrpcCall("AssemblyRAST.run_arast", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    public Map<String, Object> status(RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        TypeReference<List<Map<String, Object>>> retType = new TypeReference<List<Map<String, Object>>>() {};
+        List<Map<String, Object>> res = caller.jsonrpcCall("AssemblyRAST.status", args, retType, true, false, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 }

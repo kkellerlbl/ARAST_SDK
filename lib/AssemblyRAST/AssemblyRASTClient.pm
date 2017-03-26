@@ -27,7 +27,7 @@ AssemblyRAST::AssemblyRASTClient
 
 
 A KBase module: AssemblyRAST
-This sample module contains one small method - filter_contigs.
+This modules run assemblers supported in the AssemblyRAST service.
 
 
 =cut
@@ -82,20 +82,19 @@ sub new
     # We create an auth token, passing through the arguments that we were (hopefully) given.
 
     {
-	my $token = Bio::KBase::AuthToken->new(@args);
-	
-	if (!$token->error_message)
-	{
-	    $self->{token} = $token->token;
-	    $self->{client}->{token} = $token->token;
+	my %arg_hash2 = @args;
+	if (exists $arg_hash2{"token"}) {
+	    $self->{token} = $arg_hash2{"token"};
+	} elsif (exists $arg_hash2{"user_id"}) {
+	    my $token = Bio::KBase::AuthToken->new(@args);
+	    if (!$token->error_message) {
+	        $self->{token} = $token->token;
+	    }
 	}
-        else
-        {
-	    #
-	    # All methods in this module require authentication. In this case, if we
-	    # don't have a token, we can't continue.
-	    #
-	    die "Authentication failed: " . $token->error_message;
+	
+	if (exists $self->{token})
+	{
+	    $self->{client}->{token} = $self->{token};
 	}
     }
 
@@ -110,9 +109,9 @@ sub new
 
 
 
-=head2 filter_contigs
+=head2 run_kiki
 
-  $return = $obj->filter_contigs($params)
+  $output = $obj->run_kiki($params)
 
 =over 4
 
@@ -121,20 +120,17 @@ sub new
 =begin html
 
 <pre>
-$params is an AssemblyRAST.FilterContigsParams
-$return is an AssemblyRAST.FilterContigsResults
-FilterContigsParams is a reference to a hash where the following keys are defined:
-	workspace has a value which is an AssemblyRAST.workspace_name
-	contigset_id has a value which is an AssemblyRAST.contigset_id
-	min_length has a value which is an int
-workspace_name is a string
-contigset_id is a string
-FilterContigsResults is a reference to a hash where the following keys are defined:
-	new_contigset_ref has a value which is an AssemblyRAST.ws_contigset_id
-	n_initial_contigs has a value which is an int
-	n_contigs_removed has a value which is an int
-	n_contigs_remaining has a value which is an int
-ws_contigset_id is a string
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
 
 </pre>
 
@@ -142,33 +138,30 @@ ws_contigset_id is a string
 
 =begin text
 
-$params is an AssemblyRAST.FilterContigsParams
-$return is an AssemblyRAST.FilterContigsResults
-FilterContigsParams is a reference to a hash where the following keys are defined:
-	workspace has a value which is an AssemblyRAST.workspace_name
-	contigset_id has a value which is an AssemblyRAST.contigset_id
-	min_length has a value which is an int
-workspace_name is a string
-contigset_id is a string
-FilterContigsResults is a reference to a hash where the following keys are defined:
-	new_contigset_ref has a value which is an AssemblyRAST.ws_contigset_id
-	n_initial_contigs has a value which is an int
-	n_contigs_removed has a value which is an int
-	n_contigs_remaining has a value which is an int
-ws_contigset_id is a string
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
 
 
 =end text
 
 =item Description
 
-Filter contigs in a ContigSet by DNA length
+
 
 =back
 
 =cut
 
- sub filter_contigs
+ sub run_kiki
 {
     my($self, @args) = @_;
 
@@ -177,7 +170,7 @@ Filter contigs in a ContigSet by DNA length
     if ((my $n = @args) != 1)
     {
 	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function filter_contigs (received $n, expecting 1)");
+							       "Invalid argument count for function run_kiki (received $n, expecting 1)");
     }
     {
 	my($params) = @args;
@@ -185,35 +178,1070 @@ Filter contigs in a ContigSet by DNA length
 	my @_bad_arguments;
         (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
         if (@_bad_arguments) {
-	    my $msg = "Invalid arguments passed to filter_contigs:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    my $msg = "Invalid arguments passed to run_kiki:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
-								   method_name => 'filter_contigs');
+								   method_name => 'run_kiki');
 	}
     }
 
-    my $result = $self->{client}->call($self->{url}, $self->{headers}, {
-	method => "AssemblyRAST.filter_contigs",
-	params => \@args,
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_kiki",
+	    params => \@args,
     });
     if ($result) {
 	if ($result->is_error) {
 	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
 					       code => $result->content->{error}->{code},
-					       method_name => 'filter_contigs',
+					       method_name => 'run_kiki',
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
 	    return wantarray ? @{$result->result} : $result->result->[0];
 	}
     } else {
-        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method filter_contigs",
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_kiki",
 					    status_line => $self->{client}->status_line,
-					    method_name => 'filter_contigs',
+					    method_name => 'run_kiki',
+				       );
+    }
+}
+ 
+
+
+=head2 run_velvet
+
+  $output = $obj->run_velvet($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_velvet
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_velvet (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_velvet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_velvet');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_velvet",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_velvet',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_velvet",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_velvet',
+				       );
+    }
+}
+ 
+
+
+=head2 run_miniasm
+
+  $output = $obj->run_miniasm($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_miniasm
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_miniasm (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_miniasm:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_miniasm');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_miniasm",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_miniasm',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_miniasm",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_miniasm',
+				       );
+    }
+}
+ 
+
+
+=head2 run_spades
+
+  $output = $obj->run_spades($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_spades
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_spades (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_spades:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_spades');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_spades",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_spades',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_spades",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_spades',
+				       );
+    }
+}
+ 
+
+
+=head2 run_idba
+
+  $output = $obj->run_idba($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_idba
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_idba (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_idba:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_idba');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_idba",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_idba',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_idba",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_idba',
+				       );
+    }
+}
+ 
+
+
+=head2 run_megahit
+
+  $output = $obj->run_megahit($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_megahit
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_megahit (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_megahit:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_megahit');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_megahit",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_megahit',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_megahit",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_megahit',
+				       );
+    }
+}
+ 
+
+
+=head2 run_ray
+
+  $output = $obj->run_ray($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_ray
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_ray (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_ray:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_ray');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_ray",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_ray',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_ray",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_ray',
+				       );
+    }
+}
+ 
+
+
+=head2 run_masurca
+
+  $output = $obj->run_masurca($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_masurca
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_masurca (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_masurca:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_masurca');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_masurca",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_masurca',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_masurca",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_masurca',
+				       );
+    }
+}
+ 
+
+
+=head2 run_a5
+
+  $output = $obj->run_a5($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_a5
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_a5 (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_a5:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_a5');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_a5",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_a5',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_a5",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_a5',
+				       );
+    }
+}
+ 
+
+
+=head2 run_a6
+
+  $output = $obj->run_a6($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.AssemblyParams
+$output is an AssemblyRAST.AssemblyOutput
+AssemblyParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	min_contig_len has a value which is an int
+	extra_params has a value which is a reference to a list where each element is a string
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_a6
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_a6 (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_a6:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_a6');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_a6",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_a6',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_a6",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_a6',
+				       );
+    }
+}
+ 
+
+
+=head2 run_arast
+
+  $output = $obj->run_arast($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is an AssemblyRAST.ArastParams
+$output is an AssemblyRAST.AssemblyOutput
+ArastParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	recipe has a value which is a string
+	assembler has a value which is a string
+	pipeline has a value which is a string
+	min_contig_len has a value which is an int
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is an AssemblyRAST.ArastParams
+$output is an AssemblyRAST.AssemblyOutput
+ArastParams is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a string
+	read_library_names has a value which is a reference to a list where each element is a string
+	output_contigset_name has a value which is a string
+	recipe has a value which is a string
+	assembler has a value which is a string
+	pipeline has a value which is a string
+	min_contig_len has a value which is an int
+AssemblyOutput is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub run_arast
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function run_arast (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to run_arast:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'run_arast');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "AssemblyRAST.run_arast",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'run_arast',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method run_arast",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'run_arast',
 				       );
     }
 }
  
   
+sub status
+{
+    my($self, @args) = @_;
+    if ((my $n = @args) != 0) {
+        Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+                                   "Invalid argument count for function status (received $n, expecting 0)");
+    }
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+        method => "AssemblyRAST.status",
+        params => \@args,
+    });
+    if ($result) {
+        if ($result->is_error) {
+            Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+                           code => $result->content->{error}->{code},
+                           method_name => 'status',
+                           data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+                          );
+        } else {
+            return wantarray ? @{$result->result} : $result->result->[0];
+        }
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method status",
+                        status_line => $self->{client}->status_line,
+                        method_name => 'status',
+                       );
+    }
+}
+   
 
 sub version {
     my ($self) = @_;
@@ -226,16 +1254,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'filter_contigs',
+                method_name => 'run_arast',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method filter_contigs",
+            error => "Error invoking method run_arast",
             status_line => $self->{client}->status_line,
-            method_name => 'filter_contigs',
+            method_name => 'run_arast',
         );
     }
 }
@@ -272,7 +1300,7 @@ sub _validate_version {
 
 
 
-=head2 contigset_id
+=head2 AssemblyParams
 
 =over 4
 
@@ -280,7 +1308,17 @@ sub _validate_version {
 
 =item Description
 
-A string representing a ContigSet id.
+Run individual assemblers supported by AssemblyRAST.
+
+workspace_name - the name of the workspace for input/output
+read_library_name - the name of the PE read library (SE library support in the future)
+output_contig_set_name - the name of the output contigset
+
+extra_params - assembler specific parameters
+min_contig_length - minimum length of contigs to output, default 200
+
+@optional min_contig_len
+@optional extra_params
 
 
 =item Definition
@@ -288,14 +1326,26 @@ A string representing a ContigSet id.
 =begin html
 
 <pre>
-a string
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+read_library_names has a value which is a reference to a list where each element is a string
+output_contigset_name has a value which is a string
+min_contig_len has a value which is an int
+extra_params has a value which is a reference to a list where each element is a string
+
 </pre>
 
 =end html
 
 =begin text
 
-a string
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a string
+read_library_names has a value which is a reference to a list where each element is a string
+output_contigset_name has a value which is a string
+min_contig_len has a value which is an int
+extra_params has a value which is a reference to a list where each element is a string
+
 
 =end text
 
@@ -303,7 +1353,39 @@ a string
 
 
 
-=head2 workspace_name
+=head2 AssemblyOutput
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 ArastParams
 
 =over 4
 
@@ -311,33 +1393,19 @@ a string
 
 =item Description
 
-A string representing a workspace name.
+Call AssemblyRAST.
 
+workspace_name - the name of the workspace for input/output
+read_library_name - the name of the PE read library (SE library support in the future)
+output_contig_set_name - the name of the output contigset
 
-=item Definition
+extra_params - assembler specific parameters
+min_contig_length - minimum length of contigs to output, default 200
 
-=begin html
-
-<pre>
-a string
-</pre>
-
-=end html
-
-=begin text
-
-a string
-
-=end text
-
-=back
-
-
-
-=head2 FilterContigsParams
-
-=over 4
-
+@optional recipe
+@optional assembler
+@optional pipeline
+@optional min_contig_len
 
 
 =item Definition
@@ -346,9 +1414,13 @@ a string
 
 <pre>
 a reference to a hash where the following keys are defined:
-workspace has a value which is an AssemblyRAST.workspace_name
-contigset_id has a value which is an AssemblyRAST.contigset_id
-min_length has a value which is an int
+workspace_name has a value which is a string
+read_library_names has a value which is a reference to a list where each element is a string
+output_contigset_name has a value which is a string
+recipe has a value which is a string
+assembler has a value which is a string
+pipeline has a value which is a string
+min_contig_len has a value which is an int
 
 </pre>
 
@@ -357,77 +1429,13 @@ min_length has a value which is an int
 =begin text
 
 a reference to a hash where the following keys are defined:
-workspace has a value which is an AssemblyRAST.workspace_name
-contigset_id has a value which is an AssemblyRAST.contigset_id
-min_length has a value which is an int
-
-
-=end text
-
-=back
-
-
-
-=head2 ws_contigset_id
-
-=over 4
-
-
-
-=item Description
-
-The workspace ID for a ContigSet data object.
-@id ws KBaseGenomes.ContigSet
-
-
-=item Definition
-
-=begin html
-
-<pre>
-a string
-</pre>
-
-=end html
-
-=begin text
-
-a string
-
-=end text
-
-=back
-
-
-
-=head2 FilterContigsResults
-
-=over 4
-
-
-
-=item Definition
-
-=begin html
-
-<pre>
-a reference to a hash where the following keys are defined:
-new_contigset_ref has a value which is an AssemblyRAST.ws_contigset_id
-n_initial_contigs has a value which is an int
-n_contigs_removed has a value which is an int
-n_contigs_remaining has a value which is an int
-
-</pre>
-
-=end html
-
-=begin text
-
-a reference to a hash where the following keys are defined:
-new_contigset_ref has a value which is an AssemblyRAST.ws_contigset_id
-n_initial_contigs has a value which is an int
-n_contigs_removed has a value which is an int
-n_contigs_remaining has a value which is an int
+workspace_name has a value which is a string
+read_library_names has a value which is a reference to a list where each element is a string
+output_contigset_name has a value which is a string
+recipe has a value which is a string
+assembler has a value which is a string
+pipeline has a value which is a string
+min_contig_len has a value which is an int
 
 
 =end text

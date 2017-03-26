@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #BEGIN_HEADER
 import os
 import sys
@@ -36,30 +37,19 @@ class AssemblyRAST:
 
     Module Description:
     A KBase module: AssemblyRAST
-
-This sample module contains multiple assembly methods:
-
-    run_kiki
-    run_velvet
-    run_miniasm
-    run_spades
-    run_idba
-    run_megahit
-    run_ray
-    run_masurca
-    run_a5
-    run_a6
-
-    run_arast
-
+This modules run assemblers supported in the AssemblyRAST service.
     '''
 
-    ######## WARNING FOR GEVENT USERS #######
+    ######## WARNING FOR GEVENT USERS ####### noqa
     # Since asynchronous IO can lead to methods - even the same method -
     # interrupting each other, you must be *very* careful when using global
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
-    #########################################
+    ######################################### noqa
+    VERSION = "0.0.4"
+    GIT_URL = "git@github.com:scanon/ARAST_SDK.git"
+    GIT_COMMIT_HASH = "9857455e0d49a8eb883dd34f043e9198d090c63d"
+
     #BEGIN_CLASS_HEADER
     workspaceURL = None
 
@@ -299,90 +289,342 @@ This sample module contains multiple assembly methods:
         #END_CONSTRUCTOR
         pass
 
+
     def run_kiki(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_kiki
         output = self.arast_run(ctx, params, "kiki")
         #END run_kiki
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_kiki return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_velvet(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_velvet
         output = self.arast_run(ctx, params, "velvet")
         #END run_velvet
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_velvet return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_miniasm(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_miniasm
         output = self.arast_run(ctx, params, "miniasm")
         #END run_miniasm
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_miniasm return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_spades(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_spades
         output = self.arast_run(ctx, params, "spades")
         #END run_spades
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_spades return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_idba(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_idba
         output = self.arast_run(ctx, params, "idba")
         #END run_idba
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_idba return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_megahit(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_megahit
         output = self.arast_run(ctx, params, "megahit")
         #END run_megahit
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_megahit return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_ray(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_ray
         output = self.arast_run(ctx, params, "ray")
         #END run_ray
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_ray return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_masurca(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_masurca
         output = self.arast_run(ctx, params, "masurca")
         #END run_masurca
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_masurca return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_a5(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_a5
         output = self.arast_run(ctx, params, "a5")
         #END run_a5
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_a5 return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_a6(self, ctx, params):
+        """
+        :param params: instance of type "AssemblyParams" (Run individual
+           assemblers supported by AssemblyRAST. workspace_name - the name of
+           the workspace for input/output read_library_name - the name of the
+           PE read library (SE library support in the future)
+           output_contig_set_name - the name of the output contigset
+           extra_params - assembler specific parameters min_contig_length -
+           minimum length of contigs to output, default 200 @optional
+           min_contig_len @optional extra_params) -> structure: parameter
+           "workspace_name" of String, parameter "read_library_names" of list
+           of String, parameter "output_contigset_name" of String, parameter
+           "min_contig_len" of Long, parameter "extra_params" of list of
+           String
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_a6
         output = self.arast_run(ctx, params, "a6")
         #END run_a6
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_a6 return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
 
     def run_arast(self, ctx, params):
+        """
+        :param params: instance of type "ArastParams" (Call AssemblyRAST.
+           workspace_name - the name of the workspace for input/output
+           read_library_name - the name of the PE read library (SE library
+           support in the future) output_contig_set_name - the name of the
+           output contigset extra_params - assembler specific parameters
+           min_contig_length - minimum length of contigs to output, default
+           200 @optional recipe @optional assembler @optional pipeline
+           @optional min_contig_len) -> structure: parameter "workspace_name"
+           of String, parameter "read_library_names" of list of String,
+           parameter "output_contigset_name" of String, parameter "recipe" of
+           String, parameter "assembler" of String, parameter "pipeline" of
+           String, parameter "min_contig_len" of Long
+        :returns: instance of type "AssemblyOutput" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
         # ctx is the context object
         # return variables are: output
         #BEGIN run_arast
         output = self.arast_run(ctx, params, params.get('assembler', ""))
         #END run_arast
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_arast return value ' +
+                             'output is not type dict as required.')
+        # return the results
         return [output]
+    def status(self, ctx):
+        #BEGIN_STATUS
+        returnVal = {'state': "OK",
+                     'message': "",
+                     'version': self.VERSION,
+                     'git_url': self.GIT_URL,
+                     'git_commit_hash': self.GIT_COMMIT_HASH}
+        #END_STATUS
+        return [returnVal]

@@ -13,7 +13,7 @@ from ConfigParser import ConfigParser
 from requests_toolbelt import MultipartEncoder
 from pprint import pprint
 
-from biokbase.workspace.client import Workspace as workspaceService
+from Workspace.WorkspaceClient import Workspace as workspaceService
 from biokbase.AbstractHandle.Client import AbstractHandle as HandleService
 from AssemblyRAST.AssemblyRASTImpl import AssemblyRAST
 
