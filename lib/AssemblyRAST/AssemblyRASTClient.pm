@@ -82,20 +82,19 @@ sub new
     # We create an auth token, passing through the arguments that we were (hopefully) given.
 
     {
-	my $token = Bio::KBase::AuthToken->new(@args);
-	
-	if (!$token->error_message)
-	{
-	    $self->{token} = $token->token;
-	    $self->{client}->{token} = $token->token;
+	my %arg_hash2 = @args;
+	if (exists $arg_hash2{"token"}) {
+	    $self->{token} = $arg_hash2{"token"};
+	} elsif (exists $arg_hash2{"user_id"}) {
+	    my $token = Bio::KBase::AuthToken->new(@args);
+	    if (!$token->error_message) {
+	        $self->{token} = $token->token;
+	    }
 	}
-        else
-        {
-	    #
-	    # All methods in this module require authentication. In this case, if we
-	    # don't have a token, we can't continue.
-	    #
-	    die "Authentication failed: " . $token->error_message;
+	
+	if (exists $self->{token})
+	{
+	    $self->{client}->{token} = $self->{token};
 	}
     }
 
@@ -1146,6 +1145,7 @@ $output is an AssemblyRAST.AssemblyOutput
 ArastParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	recipe has a value which is a string
 	assembler has a value which is a string
@@ -1166,6 +1166,7 @@ $output is an AssemblyRAST.AssemblyOutput
 ArastParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	recipe has a value which is a string
 	assembler has a value which is a string
@@ -1439,6 +1440,7 @@ min_contig_length - minimum length of contigs to output, default 200
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_names has a value which is a reference to a list where each element is a string
+read_library_refs has a value which is a reference to a list where each element is a string
 output_contigset_name has a value which is a string
 recipe has a value which is a string
 assembler has a value which is a string
@@ -1454,6 +1456,7 @@ min_contig_len has a value which is an int
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_names has a value which is a reference to a list where each element is a string
+read_library_refs has a value which is a reference to a list where each element is a string
 output_contigset_name has a value which is a string
 recipe has a value which is a string
 assembler has a value which is a string

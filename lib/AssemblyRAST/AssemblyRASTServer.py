@@ -20,7 +20,7 @@ from AssemblyRAST.authclient import KBaseAuth as _KBaseAuth
 
 DEPLOY = 'KB_DEPLOYMENT_CONFIG'
 SERVICE = 'KB_SERVICE_NAME'
-AUTH = 'auth-server-url'
+AUTH = 'auth-service-url'
 
 # Note that the error fields do not match the 2.0 JSONRPC spec
 
@@ -109,7 +109,11 @@ class JSONRPCServiceCustom(JSONRPCService):
             # Exception was raised inside the method.
             newerr = JSONServerError()
             newerr.trace = traceback.format_exc()
-            newerr.data = e.message
+            if isinstance(e.message, basestring):
+                newerr.data = e.message
+            else:
+                # Some exceptions embed other exceptions as the message
+                newerr.data = repr(e.message)
             raise newerr
         return result
 
@@ -332,47 +336,47 @@ class Application(object):
         self.rpc_service.add(impl_AssemblyRAST.run_kiki,
                              name='AssemblyRAST.run_kiki',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_kiki'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_kiki'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_velvet,
                              name='AssemblyRAST.run_velvet',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_velvet'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_velvet'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_miniasm,
                              name='AssemblyRAST.run_miniasm',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_miniasm'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_miniasm'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_spades,
                              name='AssemblyRAST.run_spades',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_spades'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_spades'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_idba,
                              name='AssemblyRAST.run_idba',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_idba'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_idba'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_megahit,
                              name='AssemblyRAST.run_megahit',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_megahit'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_megahit'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_ray,
                              name='AssemblyRAST.run_ray',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_ray'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_ray'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_masurca,
                              name='AssemblyRAST.run_masurca',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_masurca'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_masurca'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_a5,
                              name='AssemblyRAST.run_a5',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_a5'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_a5'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_a6,
                              name='AssemblyRAST.run_a6',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_a6'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_a6'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.run_arast,
                              name='AssemblyRAST.run_arast',
                              types=[dict])
-        self.method_authentication['AssemblyRAST.run_arast'] = 'required' # noqa
+        self.method_authentication['AssemblyRAST.run_arast'] = 'required'  # noqa
         self.rpc_service.add(impl_AssemblyRAST.status,
                              name='AssemblyRAST.status',
                              types=[dict])

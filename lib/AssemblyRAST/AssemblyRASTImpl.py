@@ -46,9 +46,9 @@ This modules run assemblers supported in the AssemblyRAST service.
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "0.0.2"
-    GIT_URL = "git@github.com:msneddon/ARAST_SDK"
-    GIT_COMMIT_HASH = "f40aa21bb9ed1543a57ca14e636887b62f27dda7"
+    VERSION = "0.0.4"
+    GIT_URL = "git@github.com:scanon/ARAST_SDK.git"
+    GIT_COMMIT_HASH = "9212af592b71ee2df38562378489b0dedee0bf1a"
 
     #BEGIN_CLASS_HEADER
     workspaceURL = None
@@ -623,9 +623,10 @@ This modules run assemblers supported in the AssemblyRAST service.
            200 @optional recipe @optional assembler @optional pipeline
            @optional min_contig_len) -> structure: parameter "workspace_name"
            of String, parameter "read_library_names" of list of String,
-           parameter "output_contigset_name" of String, parameter "recipe" of
-           String, parameter "assembler" of String, parameter "pipeline" of
-           String, parameter "min_contig_len" of Long
+           parameter "read_library_refs" of list of String, parameter
+           "output_contigset_name" of String, parameter "recipe" of String,
+           parameter "assembler" of String, parameter "pipeline" of String,
+           parameter "min_contig_len" of Long
         :returns: instance of type "AssemblyOutput" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """

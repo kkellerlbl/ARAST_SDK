@@ -21,7 +21,7 @@ suggestions:
         related:
             []
         next:
-            [annotate_contigset]
+            []
 
 #
 # Configure the display and description of parameters

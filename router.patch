@@ -1,0 +1,22 @@
+diff --git a/lib/assembly/router.py b/lib/assembly/router.py
+index 97bc44e..112a1b3 100644
+--- a/lib/assembly/router.py
++++ b/lib/assembly/router.py
+@@ -389,7 +389,7 @@ def qc_callback():
+ class JobResource:
+     @cherrypy.expose
+     def new(self, userid=None):
+-        token_user = authenticate_request()
++        token_user = os.environ['KB_AUTH_USER_ID']
+         if token_user == 'OPTIONS':
+             return ('New Job Request') # To handle initial html OPTIONS requess
+         # user IDs can be in the email address format; somehow cherrypy converts @ and . to _
+@@ -740,7 +740,7 @@ class FilesResource:
+ class DataResource:
+     @cherrypy.expose
+     def new(self, userid=None):
+-        token_user = authenticate_request()
++        token_user = os.environ['KB_AUTH_USER_ID']
+         if token_user == 'OPTIONS':
+             return ('New Job Request') # To handle initial html OPTIONS requess
+         if not (userid == token_user or userid.split('_rast')[0] == token_user):
