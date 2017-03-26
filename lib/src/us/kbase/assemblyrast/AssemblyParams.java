@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "read_library_names",
+    "read_library_refs",
     "output_contigset_name",
     "min_contig_len",
     "extra_params"
@@ -41,6 +42,8 @@ public class AssemblyParams {
     private java.lang.String workspaceName;
     @JsonProperty("read_library_names")
     private List<String> readLibraryNames;
+    @JsonProperty("read_library_refs")
+    private List<String> readLibraryRefs;
     @JsonProperty("output_contigset_name")
     private java.lang.String outputContigsetName;
     @JsonProperty("min_contig_len")
@@ -76,6 +79,21 @@ public class AssemblyParams {
 
     public AssemblyParams withReadLibraryNames(List<String> readLibraryNames) {
         this.readLibraryNames = readLibraryNames;
+        return this;
+    }
+
+    @JsonProperty("read_library_refs")
+    public List<String> getReadLibraryRefs() {
+        return readLibraryRefs;
+    }
+
+    @JsonProperty("read_library_refs")
+    public void setReadLibraryRefs(List<String> readLibraryRefs) {
+        this.readLibraryRefs = readLibraryRefs;
+    }
+
+    public AssemblyParams withReadLibraryRefs(List<String> readLibraryRefs) {
+        this.readLibraryRefs = readLibraryRefs;
         return this;
     }
 
@@ -136,7 +154,7 @@ public class AssemblyParams {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((("AssemblyParams"+" [workspaceName=")+ workspaceName)+", readLibraryNames=")+ readLibraryNames)+", outputContigsetName=")+ outputContigsetName)+", minContigLen=")+ minContigLen)+", extraParams=")+ extraParams)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((("AssemblyParams"+" [workspaceName=")+ workspaceName)+", readLibraryNames=")+ readLibraryNames)+", readLibraryRefs=")+ readLibraryRefs)+", outputContigsetName=")+ outputContigsetName)+", minContigLen=")+ minContigLen)+", extraParams=")+ extraParams)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

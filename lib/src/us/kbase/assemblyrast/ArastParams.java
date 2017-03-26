@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "read_library_names",
+    "read_library_refs",
     "output_contigset_name",
     "recipe",
     "assembler",
@@ -45,6 +46,8 @@ public class ArastParams {
     private java.lang.String workspaceName;
     @JsonProperty("read_library_names")
     private List<String> readLibraryNames;
+    @JsonProperty("read_library_refs")
+    private List<String> readLibraryRefs;
     @JsonProperty("output_contigset_name")
     private java.lang.String outputContigsetName;
     @JsonProperty("recipe")
@@ -84,6 +87,21 @@ public class ArastParams {
 
     public ArastParams withReadLibraryNames(List<String> readLibraryNames) {
         this.readLibraryNames = readLibraryNames;
+        return this;
+    }
+
+    @JsonProperty("read_library_refs")
+    public List<String> getReadLibraryRefs() {
+        return readLibraryRefs;
+    }
+
+    @JsonProperty("read_library_refs")
+    public void setReadLibraryRefs(List<String> readLibraryRefs) {
+        this.readLibraryRefs = readLibraryRefs;
+    }
+
+    public ArastParams withReadLibraryRefs(List<String> readLibraryRefs) {
+        this.readLibraryRefs = readLibraryRefs;
         return this;
     }
 
@@ -174,7 +192,7 @@ public class ArastParams {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((("ArastParams"+" [workspaceName=")+ workspaceName)+", readLibraryNames=")+ readLibraryNames)+", outputContigsetName=")+ outputContigsetName)+", recipe=")+ recipe)+", assembler=")+ assembler)+", pipeline=")+ pipeline)+", minContigLen=")+ minContigLen)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((("ArastParams"+" [workspaceName=")+ workspaceName)+", readLibraryNames=")+ readLibraryNames)+", readLibraryRefs=")+ readLibraryRefs)+", outputContigsetName=")+ outputContigsetName)+", recipe=")+ recipe)+", assembler=")+ assembler)+", pipeline=")+ pipeline)+", minContigLen=")+ minContigLen)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

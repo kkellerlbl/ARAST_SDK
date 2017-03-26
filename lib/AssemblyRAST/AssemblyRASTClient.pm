@@ -125,6 +125,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -143,6 +144,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -225,6 +227,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -243,6 +246,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -325,6 +329,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -343,6 +348,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -425,6 +431,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -443,6 +450,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -525,6 +533,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -543,6 +552,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -625,6 +635,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -643,6 +654,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -725,6 +737,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -743,6 +756,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -825,6 +839,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -843,6 +858,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -925,6 +941,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -943,6 +960,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -1025,6 +1043,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -1043,6 +1062,7 @@ $output is an AssemblyRAST.AssemblyOutput
 AssemblyParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	min_contig_len has a value which is an int
 	extra_params has a value which is a reference to a list where each element is a string
@@ -1125,6 +1145,7 @@ $output is an AssemblyRAST.AssemblyOutput
 ArastParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	recipe has a value which is a string
 	assembler has a value which is a string
@@ -1145,6 +1166,7 @@ $output is an AssemblyRAST.AssemblyOutput
 ArastParams is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a string
 	read_library_names has a value which is a reference to a list where each element is a string
+	read_library_refs has a value which is a reference to a list where each element is a string
 	output_contigset_name has a value which is a string
 	recipe has a value which is a string
 	assembler has a value which is a string
@@ -1329,6 +1351,7 @@ min_contig_length - minimum length of contigs to output, default 200
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_names has a value which is a reference to a list where each element is a string
+read_library_refs has a value which is a reference to a list where each element is a string
 output_contigset_name has a value which is a string
 min_contig_len has a value which is an int
 extra_params has a value which is a reference to a list where each element is a string
@@ -1342,6 +1365,7 @@ extra_params has a value which is a reference to a list where each element is a 
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_names has a value which is a reference to a list where each element is a string
+read_library_refs has a value which is a reference to a list where each element is a string
 output_contigset_name has a value which is a string
 min_contig_len has a value which is an int
 extra_params has a value which is a reference to a list where each element is a string
@@ -1416,6 +1440,7 @@ min_contig_length - minimum length of contigs to output, default 200
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_names has a value which is a reference to a list where each element is a string
+read_library_refs has a value which is a reference to a list where each element is a string
 output_contigset_name has a value which is a string
 recipe has a value which is a string
 assembler has a value which is a string
@@ -1431,6 +1456,7 @@ min_contig_len has a value which is an int
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a string
 read_library_names has a value which is a reference to a list where each element is a string
+read_library_refs has a value which is a reference to a list where each element is a string
 output_contigset_name has a value which is a string
 recipe has a value which is a string
 assembler has a value which is a string

@@ -44,7 +44,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -65,7 +66,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -86,7 +88,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -107,7 +110,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -128,7 +132,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -149,7 +154,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -170,7 +176,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -191,7 +198,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -212,7 +220,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -233,7 +242,8 @@ class AssemblyRAST(object):
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -254,9 +264,10 @@ class AssemblyRAST(object):
            200 @optional recipe @optional assembler @optional pipeline
            @optional min_contig_len) -> structure: parameter "workspace_name"
            of String, parameter "read_library_names" of list of String,
-           parameter "output_contigset_name" of String, parameter "recipe" of
-           String, parameter "assembler" of String, parameter "pipeline" of
-           String, parameter "min_contig_len" of Long
+           parameter "read_library_refs" of list of String, parameter
+           "output_contigset_name" of String, parameter "recipe" of String,
+           parameter "assembler" of String, parameter "pipeline" of String,
+           parameter "min_contig_len" of Long
         :returns: instance of type "AssemblyOutput" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """

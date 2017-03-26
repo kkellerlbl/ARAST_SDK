@@ -48,7 +48,7 @@ This modules run assemblers supported in the AssemblyRAST service.
     ######################################### noqa
     VERSION = "0.0.4"
     GIT_URL = "git@github.com:scanon/ARAST_SDK.git"
-    GIT_COMMIT_HASH = "9857455e0d49a8eb883dd34f043e9198d090c63d"
+    GIT_COMMIT_HASH = "9212af592b71ee2df38562378489b0dedee0bf1a"
 
     #BEGIN_CLASS_HEADER
     workspaceURL = None
@@ -128,12 +128,14 @@ This modules run assemblers supported in the AssemblyRAST service.
         #### do some basic checks
         if 'workspace_name' not in params:
             raise ValueError('workspace_name parameter is required')
-        if 'read_library_names' not in params:
-            raise ValueError('read_library_names parameter is required')
-        if type(params['read_library_names']) != list:
-            raise ValueError('read_library_names must be a list')
-        if not params['read_library_names']:
-            raise ValueError('At least one read library must be provided')
+        if 'read_library_refs' not in params and 'read_library_names' not in params:
+            raise ValueError('read_library_refs or read_library_names parameter is required')
+        if 'read_library_refs' in params:
+            if type(params['read_library_refs']) != list:
+                raise ValueError('read_library_refs must be a list')
+        if 'read_library_names' in params:
+            if type(params['read_library_names']) != list:
+                raise ValueError('read_library_names must be a list')
         if 'output_contigset_name' not in params:
             raise ValueError('output_contigset_name parameter is required')
         min_contig_len = params.get('min_contig_len') or 300
@@ -143,11 +145,17 @@ This modules run assemblers supported in the AssemblyRAST service.
         os.environ["KB_AUTH_TOKEN"] = token
         os.environ["ARAST_URL"] =  server
 
-        ws = workspaceService(self.workspaceURL, token=token)
+        ws = workspaceService(self.workspaceURL)
         ws_libs = []
-        for lib_name in params['read_library_names']:
-            ws_libs.append({'ref': params['workspace_name']+'/'+lib_name})
-        libs = ws.get_objects(ws_libs)
+        if 'read_library_refs' in params:
+            for lib_ref in params['read_library_refs']:
+                ws_libs.append({'ref': lib_ref})
+        if 'read_library_names' in params:
+            for lib_name in params['read_library_names']:
+                ws_libs.append({'ref': params['workspace_name'] + '/' + lib_name})
+        if len(ws_libs)==0:
+            raise ValueError('At least one read library must be provided in read_library_refs or read_library_names')
+        libs = ws.get_objects2({'objects': ws_libs})['data']
 
         wsid = libs[0]['info'][6]
 
@@ -223,7 +231,11 @@ This modules run assemblers supported in the AssemblyRAST service.
         if 'provenance' in ctx:
             provenance = ctx['provenance']
         # add additional info to provenance here, in this case the input data object reference
-        provenance[0]['input_ws_objects']=[params['workspace_name']+'/'+x for x in params['read_library_names']]
+        if 'read_library_names' in params:
+            provenance[0]['input_ws_objects']=[params['workspace_name']+'/'+x for x in params['read_library_names']]
+        elif 'read_library_refs' in params:
+            provenance[0]['input_ws_objects']=[x for x in params['read_library_refs']]
+
 
         os.remove(tmp_data)
         #shutil.rmtree(output_dir)
@@ -301,7 +313,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -331,7 +344,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -361,7 +375,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -391,7 +406,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -421,7 +437,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -451,7 +468,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -481,7 +499,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -511,7 +530,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -541,7 +561,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -571,7 +592,8 @@ This modules run assemblers supported in the AssemblyRAST service.
            minimum length of contigs to output, default 200 @optional
            min_contig_len @optional extra_params) -> structure: parameter
            "workspace_name" of String, parameter "read_library_names" of list
-           of String, parameter "output_contigset_name" of String, parameter
+           of String, parameter "read_library_refs" of list of String,
+           parameter "output_contigset_name" of String, parameter
            "min_contig_len" of Long, parameter "extra_params" of list of
            String
         :returns: instance of type "AssemblyOutput" -> structure: parameter
@@ -601,9 +623,10 @@ This modules run assemblers supported in the AssemblyRAST service.
            200 @optional recipe @optional assembler @optional pipeline
            @optional min_contig_len) -> structure: parameter "workspace_name"
            of String, parameter "read_library_names" of list of String,
-           parameter "output_contigset_name" of String, parameter "recipe" of
-           String, parameter "assembler" of String, parameter "pipeline" of
-           String, parameter "min_contig_len" of Long
+           parameter "read_library_refs" of list of String, parameter
+           "output_contigset_name" of String, parameter "recipe" of String,
+           parameter "assembler" of String, parameter "pipeline" of String,
+           parameter "min_contig_len" of Long
         :returns: instance of type "AssemblyOutput" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """

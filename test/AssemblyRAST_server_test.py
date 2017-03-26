@@ -272,6 +272,7 @@ class AssemblyRASTTest(unittest.TestCase):
     def test_run_arast(self):
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo()
+        pe_lib_ref = str(pe_lib_info[6]) + '/' + str(pe_lib_info[1]) + '/' + str(pe_lib_info[4])
         #pprint(pe_lib_info)
 
         # Object Info Contents
@@ -289,7 +290,7 @@ class AssemblyRASTTest(unittest.TestCase):
 
         params = {
             'workspace_name': pe_lib_info[7],
-            'read_library_names': [pe_lib_info[1]],
+            'read_library_refs': [pe_lib_ref],
             'output_contigset_name': 'output.contigset',
             'min_contig_length': 350,
             'recipe': 'kiki'
@@ -297,7 +298,9 @@ class AssemblyRASTTest(unittest.TestCase):
             # 'assembler': ''
         }
 
-        result = self.getImpl().run_arast(self.getContext(),params)
+        result = self.getImpl().run_arast(self.getContext(), params)[0]
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
         print('RESULT:')
         pprint(result)
 
@@ -306,18 +309,21 @@ class AssemblyRASTTest(unittest.TestCase):
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo()
+        pe_lib_ref = str(pe_lib_info[6]) + '/' + str(pe_lib_info[1]) + '/' + str(pe_lib_info[4])
         pprint(pe_lib_info)
 
 
         params = {
             'workspace_name': pe_lib_info[7],
-            'read_library_names': [pe_lib_info[1]],
+            'read_library_refs': [pe_lib_ref],
             'output_contigset_name': 'output.contigset',
             'min_contig_length': 350,
             #'extra_params': '-k 23'
         }
 
-        result = self.getImpl().run_kiki(self.getContext(),params)
+        result = self.getImpl().run_kiki(self.getContext(), params)[0]
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
         print('RESULT:')
         pprint(result)
 
@@ -325,50 +331,59 @@ class AssemblyRASTTest(unittest.TestCase):
 
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo()
+        pe_lib_ref = str(pe_lib_info[6]) + '/' + str(pe_lib_info[1]) + '/' + str(pe_lib_info[4])
         pprint(pe_lib_info)
 
 
         params = {
             'workspace_name': pe_lib_info[7],
-            'read_library_names': [pe_lib_info[1]],
+            'read_library_refs': [pe_lib_ref],
             'output_contigset_name': 'output.contigset',
             'min_contig_length': 350,
             #'extra_params': '-k 23'
         }
 
-        result = self.getImpl().run_velvet(self.getContext(),params)
-        print('RESULT:')
+        result = self.getImpl().run_velvet(self.getContext(), params)[0]
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
+        print('VELVET RESULT:')
         pprint(result)
 
     def test_run_a6(self):
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo()
+        pe_lib_ref = str(pe_lib_info[6]) + '/' + str(pe_lib_info[1]) + '/' + str(pe_lib_info[4])
         pprint(pe_lib_info)
 
         params = {
             'workspace_name': pe_lib_info[7],
-            'read_library_names': [pe_lib_info[1]],
+            'read_library_refs': [pe_lib_ref],
             'output_contigset_name': 'output.contigset',
             'min_contig_length': 350,
         }
 
-        result = self.getImpl().run_a6(self.getContext(),params)
-        print('RESULT:')
+        result = self.getImpl().run_a6(self.getContext(), params)[0]
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
+        print('A6 RESULT:')
         pprint(result)
 
     def test_run_masurca(self):
         # figure out where the test data lives
         pe_lib_info = self.getPairedEndLibInfo()
+        pe_lib_ref = str(pe_lib_info[6]) + '/' + str(pe_lib_info[1]) + '/' + str(pe_lib_info[4])
         pprint(pe_lib_info)
 
         params = {
             'workspace_name': pe_lib_info[7],
-            'read_library_names': [pe_lib_info[1]],
+            'read_library_refs': [pe_lib_ref],
             'output_contigset_name': 'output.contigset',
             'min_contig_length': 350,
         }
 
-        result = self.getImpl().run_masurca(self.getContext(),params)
-        print('RESULT:')
+        result = self.getImpl().run_masurca(self.getContext(), params)[0]
+        self.assertIn('report_name', result)
+        self.assertIn('report_ref', result)
+        print('MASURCA RESULT:')
         pprint(result)
 
