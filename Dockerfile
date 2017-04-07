@@ -38,7 +38,7 @@ RUN \
     cp /tmp/tools/add-comp.pl . && \
     sed -i 's/run("wget \$url/run("wget --no-check-certificate \$url/' ./add-comp.pl && \
     ./add-comp.pl -d /kb/runtime/assembly prodigal && \
-    ./add-comp.pl -d /kb/runtime/assembly regular && \
+    ./add-comp.pl -d /kb/runtime/assembly a5 a6 ale bowtie2 bwa fastqc fastx gam_ngs idba kiki kmergenie masurca megahit miniasm quast prodigal ray reapr seqtk solexa spades velvet && \
     rm -rf /mnt/tmp
 
 RUN \
